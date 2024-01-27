@@ -1,31 +1,52 @@
 import { loginUser } from "@/services/loginServices";
 import "@/styles/LoginForm.css";
-import { Alert, Avatar, CircularProgress, InputAdornment, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import { Alert, Avatar, CircularProgress, IconButton, InputAdornment, TextField, Tooltip } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from "react-router-dom";
 
-import { CiLock, CiMail } from "react-icons/ci";
+import { useAppContext } from "@/hooks/useAppContext";
+import { CiMail } from "react-icons/ci";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
-import { NavigateFunction, useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
-
+    const { state } = useLocation()
     const [error, setError] = useState<boolean>(false)
     const [emptyFieldError, setEmptyFieldError] = useState<boolean>(false)
     const [loader, setLoader] = useState<boolean>(false)
-    const navigate: NavigateFunction = useNavigate()
+    const [showPassword, setShowPassword] = useState<boolean>(false)
+    const { setUser, isMobile,navigate } = useAppContext()
 
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (token) {
+            setUser('authenticated')
+        }
+    }, [])
 
     const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setEmptyFieldError(false)
+        setError(false)
         const data = new FormData(e.currentTarget);
         const { username, password } = { username: data.get('username'), password: data.get('password') };
-        if (username === '' || password === '')
-        setEmptyFieldError(true)
-    else {
+        if (username === '' || password === '') {
+
+            setEmptyFieldError(true)
+        }
+        else {
             setLoader(true)
             const res = await loginUser(username, password);
             if (res === 200) {
-                navigate('/jobListings')
+                setUser('LoggedIn')
+                if (state?.id) {
+
+                    navigate(`/search/${state.id}`)
+                }
+                else {
+
+                    navigate('/')
+                }
             }
             else {
                 setLoader(false)
@@ -33,6 +54,10 @@ const LoginForm = () => {
             }
         }
 
+    }
+
+    const handlePasswordVisibility = () => {
+        setShowPassword(!showPassword)
     }
 
     return (
@@ -44,8 +69,11 @@ const LoginForm = () => {
                     <div className="fs-6">Sign in to access your account </div>
                 </div>
             </div>
-            {error && <Alert className="w-75 mt-3 d-flex align-items-center" severity="error"><div className="">Invalid Username/Password</div></Alert>}
-            {emptyFieldError && <Alert className="w-75 mt-3 d-flex align-items-center" severity="error"><div className="">Empty fields are not allowed </div></Alert>}
+            <div className="d-flex justify-content-center align-items-center">
+                {error && <Alert className={`${isMobile ? 'w-100' : 'w-75'} mt-3 d-flex align-items-center`} severity="error"><div className="">Invalid Username/Password</div></Alert>}
+                {emptyFieldError && <Alert className="w-75 mt-3 d-flex justify-content-center align-items-center" severity="error"><div className="">Empty fields are not allowed </div></Alert>}
+                {state?.redirected && <Alert className="w-75 mt-3 d-flex justify-content-center align-items-center" severity="info">Login to Continue</Alert>}
+            </div>
             <div className="w-100">
                 <div className="mt-4" id="loginForm">
                     <form onSubmit={handleSubmit} className='d-flex flex-column w-100 align-items-center gap-3'>
@@ -60,10 +88,17 @@ const LoginForm = () => {
                         <TextField size="medium" placeholder="Password" InputProps={{
                             endAdornment: (
                                 <InputAdornment position='end' className="">
-                                    <CiLock size="25" />
+                                    <Tooltip title={showPassword ? "Hide Password" : "Show Password"}>
+                                        <IconButton onClick={handlePasswordVisibility}>
+                                            {
+                                                showPassword ? <FaEyeSlash /> : <FaEye />
+                                            }
+                                        </IconButton>
+                                    </Tooltip>
                                 </InputAdornment>)
                         }} className="w-75"
                             name="password"
+                            type={showPassword ? 'text' : 'password'}
                         />
                         <button type="submit" color="success" className="w-75 btn button-color" disabled={loader}>
                             {loader ? (<CircularProgress />) :

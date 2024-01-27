@@ -1,0 +1,10 @@
+.jobLists{
+    overflow-x:hidden ;
+    overflow-y: auto;
+    max-height: 75vh;
+}
+.jobLists-mobile{
+    overflow-x:hidden ;
+    overflow-y: auto;
+    max-height: 68vh;
+}

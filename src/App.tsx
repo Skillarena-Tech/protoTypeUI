@@ -1,21 +1,20 @@
-import { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { Homepage } from './pages/Homepage'
-import ProtectedRoutes from './routes/ProtectedRoutes'
-import { JobListings } from './pages/JobListings'
+import { Loader } from './components/Loader'
 import { AppContextProvider } from './context/AppContext'
+import { JobDetailPage, JobListings } from './pages/JobListings'
+import { LoginPage } from './pages/LoginPage'
+import { Search } from './pages/Search'
 
 const App = () => {
-  useEffect(() => {
-    document.title = 'SkillArena'
-  }, [])
+
   return (
     <AppContextProvider>
+      <Loader />
       <Routes>
-        <Route path='/' element={<Homepage />} />
-        <Route element={<ProtectedRoutes />}>
-          <Route element={<JobListings />} path="/jobListings" />
-        </Route>
+        <Route element={<Search />} path="/" />
+        <Route element={<LoginPage />} path='/login' />
+        <Route element={<JobListings />} path="/search" />
+        <Route element={<JobDetailPage />} path="/search/:id" />
       </Routes>
     </AppContextProvider>
   )

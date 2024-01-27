@@ -1,4 +1,9 @@
 .logo-background {
-  background-image: url("../../assets/images/hello.png"),
-    linear-gradient(117.67deg, #04ba71 0%, #04454d 97.65%);
+  background-image: url("../../assets/images/logo-background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }

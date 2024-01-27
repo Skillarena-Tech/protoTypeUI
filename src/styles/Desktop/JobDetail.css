@@ -1,0 +1,19 @@
+#jobDescription {
+  max-height: 40vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+#jobDescriptionMobile {
+  max-height: 40vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#jobDescriptionMobile::-webkit-scrollbar {
+  display: none;
+}
+
+.cardLayout {
+  filter: drop-shadow(3px 6px 3px #aba6a6);
+  border: 1px solid #04ba71;
+}

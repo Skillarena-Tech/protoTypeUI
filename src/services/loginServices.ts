@@ -13,7 +13,7 @@ const loginUser = async (username: any, password: any) => {
       },
       {}
     );
-    localStorage.setItem("token", res.headers["access_token"].split(" ")[1]);
+    localStorage.setItem("token", res.headers["authorization"].split(" ")[1]);
     return res?.status;
   } catch (error: any) {
     return error.status;

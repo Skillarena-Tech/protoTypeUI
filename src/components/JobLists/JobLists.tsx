@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 export const JobLists = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [data, setData] = useState<any[]>(Array.from({ length: 20 }))
 
     const fetchMoreData = () => {
@@ -32,7 +33,7 @@ export const JobLists = () => {
                 }}
             >
                 <div className="row w-100">
-                    {data.map((i, index) => (
+                    {data.map((_i, index) => (
                         <div className="col-lg-4" key={index}>
                             <div className='m-2'>
                                 <JobCard />

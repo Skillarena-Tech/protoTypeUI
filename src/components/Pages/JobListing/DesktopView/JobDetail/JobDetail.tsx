@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { themeColor } from '@/utils/theme'
 import { Avatar, Button } from '@mui/material'
 import "@/styles/Desktop/JobDetail.css"
 import { JobDescriptionComponent } from '../JobDescriptionComponent'
 import { useAppContext } from '@/hooks/useAppContext'
 
-export const JobDetail = ({ jobDetail }) => {
+export const JobDetail = (props:any) => {
+    const { jobDetail } = props
     const { setOpenLoaderModal, setLoaderType } = useAppContext()
     return (
         <div className='card mx-5  p-4 px-5' style={{ border: `1px solid ${themeColor}` }}>

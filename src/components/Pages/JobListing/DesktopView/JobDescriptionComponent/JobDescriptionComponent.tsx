@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
-export const JobDescriptionComponent = ({ jobDetail }) => {
+export const JobDescriptionComponent = (props: any) => {
+    const { jobDetail } = props
     return (
         <div>
             <div id="jobDescription">

@@ -23,6 +23,7 @@ export const JobListings = () => {
         getJobList()
     }, [])
 
+    
     return (
         <Layout showLogo={true} showSearchBar={true}>
             {isMobile && <div className="w-100">
@@ -31,7 +32,7 @@ export const JobListings = () => {
                 </div>
             </div>}
             {
-                totalJobCount > 0 && <Fragment  >
+                totalJobCount > 0 ? <Fragment  >
                     <div className="fs-5 fw-bold ps-4">{totalJobCount > 1 ? `${totalJobCount} jobs` : `${totalJobCount} Job`}   Found</div>
                     <div className={`${isMobile ? "jobLists-mobile" : "jobLists"} mt-1`} id="jobList">
                         <div className="d-flex justify-content-center align-items-center p-3">
@@ -39,6 +40,7 @@ export const JobListings = () => {
                         </div>
                     </div>
                 </Fragment>
+                    : (<>not Found Message</>)
             }
         </Layout >
     )

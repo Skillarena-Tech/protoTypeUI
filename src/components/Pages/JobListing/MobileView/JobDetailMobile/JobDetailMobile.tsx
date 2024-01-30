@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAppContext } from '@/hooks/useAppContext'
 import "@/styles/Desktop/JobDetail.css"
 import { themeColor } from '@/utils/theme'
@@ -6,7 +7,8 @@ import { Fragment } from 'react'
 import { IoArrowBack } from "react-icons/io5"
 import { JobDescriptionComponent } from '../JobDescriptionComponent'
 
-export const JobDetailMobile = () => {
+export const JobDetailMobile = (props: any) => {
+    const { jobDetail } = props
     const { setOpenLoaderModal, setLoaderType, navigate } = useAppContext()
     return (
         <Fragment>
@@ -19,11 +21,11 @@ export const JobDetailMobile = () => {
                 <div id="companyDetailsWithApply" className='d-flex justify-content-between align-items-center'>
                     <div>
                         <div className="d-flex flex-row gap-4 align-items-center" id="companyDescription">
-                            <div><Avatar src="https://upload.wikimedia.org/wikipedia/commons/8/83/Titan_Company_Logo.png" ></Avatar></div>
+                            <div><Avatar src="https://source.unsplash.com/random?wallpapers" ></Avatar></div>
                             <div>
-                                <h5 className="card-title fw-bold">Software Engineer</h5>
-                                <div className="card-text " style={{ fontSize: "0.9em" }}>Titan</div>
-                                <div className="card-text " style={{ fontSize: "0.7em" }}>Noida, Delhi</div>
+                                <h5 className="card-title fw-bold">{jobDetail.title}</h5>
+                                <div className="card-text " style={{ fontSize: "0.9em" }}>{jobDetail.name}</div>
+                                <div className="card-text " style={{ fontSize: "0.7em" }}>{jobDetail.city} {jobDetail.state}</div>
                             </div>
                         </div>
                     </div>
@@ -31,8 +33,8 @@ export const JobDetailMobile = () => {
                 </div>
                 <div id="jobInfo" className='d-flex flex-row gap-5 mt-4'>
                     <div className="d-flex flex-column">
-                        <div className='text-success text-uppercase fw-bold fs-6'>Apply Before</div>
-                        <div>30 July, 2023</div>
+                        <div className='text-success text-uppercase fw-bold fs-6'>Registered</div>
+                        <div>{jobDetail.registered_year}</div>
                     </div>
                     <div className="d-flex flex-column">
                         <div className='text-success text-uppercase fw-bold fs-6'>Job Location</div>
@@ -44,7 +46,7 @@ export const JobDetailMobile = () => {
                     <div>Remote</div>
                 </div>
                 <div id="jobDescriptionMobile" className='mt-4'>
-                    <JobDescriptionComponent />
+                    <JobDescriptionComponent jobDetail={jobDetail} />
                 </div>
             </div>
             <div className="d-flex justify-content-center align-items-center"><Button onClick={() => { setOpenLoaderModal(true); setLoaderType('applied') }} variant="contained" className="w-75 my-3  " color="success" sx={{ backgroundColor: themeColor }}>Apply</Button></div>

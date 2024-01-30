@@ -29,7 +29,7 @@ export const JobDetailPage = () => {
     }, [])
     return (
         <Fragment>
-            {!isMobile ? <DesktopLayout showLogo showSearchBar><JobDetail jobDetail={jobDetail} /></DesktopLayout> : <MobileLayout showLogo showSearchBar={false}><JobDetailMobile /></MobileLayout>}
+            {!isMobile ? <DesktopLayout showLogo showSearchBar><JobDetail jobDetail={jobDetail} /></DesktopLayout> : <MobileLayout showLogo showSearchBar={false}><JobDetailMobile jobDetail={jobDetail}/></MobileLayout>}
         </Fragment>
     )
 }

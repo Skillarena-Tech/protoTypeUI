@@ -5,14 +5,14 @@ import { JobDetailPage, JobListings } from './pages/JobListings'
 import { LoginPage } from './pages/LoginPage'
 import { Search } from './pages/Search'
 
-const App = () => {
 
+const App = () => {
   return (
     <AppContextProvider>
       <Loader />
       <Routes>
-        <Route element={<Search />} path="/" />
-        <Route element={<LoginPage />} path='/login' />
+        <Route element={<Search />} path="/home" />
+        <Route element={<LoginPage />} path='/' />
         <Route element={<JobListings />} path="/search" />
         <Route element={<JobDetailPage />} path="/search/:id" />
       </Routes>

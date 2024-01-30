@@ -8,6 +8,12 @@
   filter: drop-shadow(1px 2px 7px #aba6a6);
 }
 
+.cardBadge{
+  padding:10px;
+  border: 1px solid #04ba71;
+  color:#04ba71;
+  border-radius:5px
+}
 .cursor-pointer {
   cursor: pointer;
 }

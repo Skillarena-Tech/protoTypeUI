@@ -2,7 +2,7 @@ import { loginUser } from "@/services/loginServices";
 import "@/styles/LoginForm.css";
 import { Alert, Avatar, CircularProgress, IconButton, InputAdornment, TextField, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 
 import { useAppContext } from "@/hooks/useAppContext";
 import { CiMail } from "react-icons/ci";
@@ -10,18 +10,19 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 
 const LoginForm = () => {
-    const { state } = useLocation()
+    // const { state } = useLocation()
     const [error, setError] = useState<boolean>(false)
     const [emptyFieldError, setEmptyFieldError] = useState<boolean>(false)
     const [loader, setLoader] = useState<boolean>(false)
     const [showPassword, setShowPassword] = useState<boolean>(false)
-    const { setUser, isMobile,navigate } = useAppContext()
+    const { setUser, isMobile, navigate, setToken, setSearchQuery } = useAppContext()
 
     useEffect(() => {
         const token = localStorage.getItem('token')
         if (token) {
             setUser('authenticated')
         }
+        setSearchQuery('')
     }, [])
 
     const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -37,16 +38,10 @@ const LoginForm = () => {
         else {
             setLoader(true)
             const res = await loginUser(username, password);
-            if (res === 200) {
+            if (res.status === 200) {
                 setUser('LoggedIn')
-                if (state?.id) {
-
-                    navigate(`/search/${state.id}`)
-                }
-                else {
-
-                    navigate('/')
-                }
+                setToken(res.headers["authorization"].split(" ")[1])
+                navigate("/home")
             }
             else {
                 setLoader(false)
@@ -72,7 +67,7 @@ const LoginForm = () => {
             <div className="d-flex justify-content-center align-items-center">
                 {error && <Alert className={`${isMobile ? 'w-100' : 'w-75'} mt-3 d-flex align-items-center`} severity="error"><div className="">Invalid Username/Password</div></Alert>}
                 {emptyFieldError && <Alert className="w-75 mt-3 d-flex justify-content-center align-items-center" severity="error"><div className="">Empty fields are not allowed </div></Alert>}
-                {state?.redirected && <Alert className="w-75 mt-3 d-flex justify-content-center align-items-center" severity="info">Login to Continue</Alert>}
+                {/* {state?.redirected && <Alert className="w-75 mt-3 d-flex justify-content-center align-items-center" severity="info">Login to Continue</Alert>} */}
             </div>
             <div className="w-100">
                 <div className="mt-4" id="loginForm">

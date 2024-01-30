@@ -6,11 +6,12 @@ import { IoSearchOutline } from "react-icons/io5";
 
 const Searchbar = () => {
     const { searchQuery, setSearchQuery, setOpenLoaderModal, getUserLocation } = useAppContext()
+
+
     const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
         const data = new FormData(e.currentTarget)
         e.preventDefault()
         if (data.get('searchString')) {
-
             setOpenLoaderModal(true)
             getUserLocation()
         }
@@ -20,7 +21,7 @@ const Searchbar = () => {
 
 
     return (
-        <Fragment> 
+        <Fragment>
             <form onSubmit={handleSubmit}>
                 <TextField
                     className='w-100'

@@ -13,7 +13,10 @@ type AppContextProps = {
     loaderType: string,
     setLoaderType: (loaderType: string) => void,
     getUserLocation: () => void,
-    navigate: NavigateFunction
+    navigate: NavigateFunction,
+    token: string,
+    setToken: (token: string) => void,
+    locationAccess: boolean,
 }
 
 export const AppContext = createContext<AppContextProps>(null!)
@@ -28,6 +31,8 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
     const isMobileDevice = useMediaQuery(theme.breakpoints.down('md'))
     const isMobileWidth = useMediaQuery('(max-width:1100px)')
     const isMobile = isMobileDevice || isMobileWidth ? true : false
+    const [token, setToken] = useState<string>('')
+    const [locationAccess, setLocationAccess] = useState<boolean>(false)
 
     const navigate = useNavigate()
 
@@ -49,14 +54,16 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
             .query({ name: "geolocation" })
             .then(function (result) {
                 navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+                setLocationAccess(true)
+                navigate('/search')
                 console.log(result);
             }).catch(error => {
+                navigate('/search')
                 console.log(error)
             })
-
     }
 
-    const value: AppContextProps = { isMobile, user, setUser, searchQuery, setSearchQuery, openLoaderModal, setOpenLoaderModal, loaderType, setLoaderType, getUserLocation, navigate }
+    const value: AppContextProps = { isMobile, user, setUser, searchQuery, setSearchQuery, openLoaderModal, setOpenLoaderModal, loaderType, setLoaderType, getUserLocation, navigate, token, setToken, locationAccess }
     return (
         <AppContext.Provider value={value}>
             {props.children}

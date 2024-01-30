@@ -5,6 +5,7 @@ import { themeColor } from '@/utils/theme'
 import { Avatar, Button, IconButton, Menu, MenuItem, Tooltip } from '@mui/material'
 import React from "react"
 import { Fragment, useEffect } from 'react'
+import avatarLogo from '@/assets/images/avatar.png'
 
 type HeaderProps = {
     showLogo: boolean,
@@ -12,9 +13,8 @@ type HeaderProps = {
 }
 
 const Header = ({ showLogo = false, showSearchBar = false }: HeaderProps) => {
-    const { user, isMobile, setUser, navigate, setSearchQuery } = useAppContext()
+    const { user, isMobile, setUser, navigate, setSearchQuery, token, setToken } = useAppContext()
     useEffect(() => {
-        const token = localStorage.getItem('token')
         if (token) {
             setUser('authenticated')
         }
@@ -30,15 +30,15 @@ const Header = ({ showLogo = false, showSearchBar = false }: HeaderProps) => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('token')
         setUser('')
+        setToken('')
         navigate("/")
     }
     return (
         <Fragment>
             <div className="d-flex justify-content-between  align-items-center ">
                 {showLogo && (<div className={`${(!showSearchBar || isMobile) ? 'h-50 w-50' : 'h-25 w-25'}`} style={{ cursor: 'pointer' }} onClick={() => {
-                    navigate('/')
+                    navigate(token ? '/home' : '/')
                     setSearchQuery('')
                 }}>
                     <img src={logo} alt="" className='h-100 w-100' />
@@ -55,7 +55,7 @@ const Header = ({ showLogo = false, showSearchBar = false }: HeaderProps) => {
                             <Tooltip title="Profile">
                                 <Fragment>
                                     <IconButton onClick={handleClick}>
-                                        <Avatar src="https://avatar.iran.liara.run/public/30" sx={{ height: "50px", width: "50px" }} />
+                                        <Avatar src={avatarLogo} sx={{ height: "50px", width: "50px" }} />
                                     </IconButton>
                                     <Menu
                                         id="basic-menu"
@@ -77,7 +77,7 @@ const Header = ({ showLogo = false, showSearchBar = false }: HeaderProps) => {
                             backgroundColor: themeColor
                         }}
                             color="success" variant="contained" onClick={() => {
-                                navigate('/login')
+                                navigate('/')
                             }}>Login</Button>
                     }
                 </div>

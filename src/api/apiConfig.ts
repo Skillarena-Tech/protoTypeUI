@@ -12,6 +12,8 @@ export const apiConfig = {
     headers: AxiosRequestConfig
   ): Promise<AxiosResponse> => {
     try {
+      console.log("Headers", headers);
+
       const res = await api.get(url, headers);
       return res;
     } catch (error: any) {

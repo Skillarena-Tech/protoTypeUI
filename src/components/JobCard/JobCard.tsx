@@ -2,28 +2,31 @@ import { useAppContext } from '@/hooks/useAppContext'
 import "@/styles/JobCard.css"
 import { Avatar } from '@mui/material'
 
-export const JobCard = () => {
+export const JobCard = (props: any) => {
     const { navigate } = useAppContext()
     return (
         <div className="card cardLayout cursor-pointer" onClick={() => {
-            navigate("/search/1")
+            navigate(`/search/${props.job.id}`, { state: {
+                job:props.job
+            } })
         }}>
             <div className="card-body">
                 <div className="d-flex flex-row gap-2 align-items-center" id="companyDescription">
-                    <div><Avatar src="https://upload.wikimedia.org/wikipedia/commons/8/83/Titan_Company_Logo.png" ></Avatar></div>
+
+                    <div><Avatar src={"https://source.unsplash.com/random?wallpapers"} ></Avatar></div>
                     <div>
-                        <h5 className="card-title fw-bold">Software Engineer</h5>
-                        <div className="card-text " style={{ fontSize: "0.9em" }}>Titan</div>
-                        <div className="card-text " style={{ fontSize: "0.7em" }}>Noida, Delhi</div>
+                        <h5 className="card-title fw-bold">{props.job.title}</h5>
+                        <div className="card-text " style={{ fontSize: "0.9em" }}>{props.job.name}</div>
+                        <div className="card-text " style={{ fontSize: "0.7em" }}>{props.job.city}, {props.job.state}</div>
                     </div>
                 </div>
-                <div className="d-flex justify-content-between mt-4">
+                <div className="d-flex justify-content-between align-items-center mt-4">
                     <div className="d-flex flex-row gap-2 ">
-                        <div><span className="badge bg-success p-2">Full time</span></div>
-                        <div><span className="badge bg-success p-2">WFO</span></div>
+                        <div><span className="cardBadge">Full time</span></div>
+                        <div><span className="cardBadge">WFO</span></div>
 
                     </div>
-                    <div className="me-2">&#8377; 64k-80k/montly</div>
+                    <div className="me-2">{props.job.salary}</div>
                 </div>
             </div>
         </div>

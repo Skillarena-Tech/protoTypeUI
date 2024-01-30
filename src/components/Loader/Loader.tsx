@@ -4,7 +4,7 @@ import { LocationPermissionLoader } from './LocationPermissionLoader'
 import { AppliedLoader } from './AppliedLoader'
 
 export const Loader = () => {
-    const { openLoaderModal, loaderType } = useAppContext()
+    const { openLoaderModal, loaderType = '' } = useAppContext()
     const loaderRender = () => {
         switch (loaderType) {
             case 'location':

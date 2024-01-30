@@ -3,10 +3,14 @@ import Searchbar from '@/components/SearchBar/Searchbar'
 import { useAppContext } from "@/hooks/useAppContext"
 import { DesktopLayout } from '@/layout/DesktopLayout/DesktopLayout'
 import MobileLayout from '@/layout/MobileLayout/MobileLayout'
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 
 export const Search = () => {
-    const { isMobile } = useAppContext()
+    const { isMobile, navigate, token } = useAppContext()
+    useEffect(() => {
+        if (!token)
+            navigate('/')
+    }, [])
     return (
         <Fragment>
             {
@@ -15,7 +19,7 @@ export const Search = () => {
                         <DesktopLayout showLogo={false} showSearchBar={false}>
                             <div className='d-flex justify-content-center align-items-center h-100'>
                                 <div className="w-50 mb-5">
-                                    <img src={logoWithTagline} alt="" className='w-100' />
+                                    <img src={logoWithTagline} alt="" className='w-100'  />
                                     <Searchbar />
                                 </div>
                             </div>

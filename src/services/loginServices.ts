@@ -13,10 +13,9 @@ const loginUser = async (username: any, password: any) => {
       },
       {}
     );
-    localStorage.setItem("token", res.headers["authorization"].split(" ")[1]);
-    return res?.status;
+    return res;
   } catch (error: any) {
-    return error.status;
+    return error;
   }
 };
 const getUser = async () => {

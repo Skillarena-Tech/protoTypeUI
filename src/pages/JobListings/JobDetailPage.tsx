@@ -3,26 +3,33 @@ import { JobDetailMobile } from '@/components/Pages/JobListing/MobileView/JobDet
 import { useAppContext } from '@/hooks/useAppContext';
 import { DesktopLayout } from '@/layout/DesktopLayout/DesktopLayout';
 import MobileLayout from '@/layout/MobileLayout/MobileLayout';
-import { Fragment, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { getJobById } from '@/services/jobListingServices';
+import { Fragment, useEffect,useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 
 export const JobDetailPage = () => {
-    const { isMobile, navigate } = useAppContext();
-    const { id } = useParams()
+    const { isMobile } = useAppContext();
+    const { state } = useLocation();
+    const [jobDetail, setJobDetail] = useState<any[]>([]);
+    // useEffect(() => {
+    //     const token = localStorage.getItem('token')
+    //     if (!token) {
+    //         navigate("/", {
+    //             state: {
+    //                 redirected: true,
+    //                 id: id
+    //             }
+    //         })
+    //     }
+    // }, [])
     useEffect(() => {
-        const token = localStorage.getItem('token')
-        if (!token) {
-            navigate("/login", {
-                state: {
-                    redirected: true,
-                    id: id
-                }
-            })
+        if (state) {
+            setJobDetail(state.job)
         }
     }, [])
     return (
         <Fragment>
-            {!isMobile ? <DesktopLayout showLogo showSearchBar><JobDetail /></DesktopLayout> : <MobileLayout showLogo showSearchBar={false}><JobDetailMobile /></MobileLayout>}
+            {!isMobile ? <DesktopLayout showLogo showSearchBar><JobDetail jobDetail={jobDetail}/></DesktopLayout> : <MobileLayout showLogo showSearchBar={false}><JobDetailMobile /></MobileLayout>}
         </Fragment>
     )
 }

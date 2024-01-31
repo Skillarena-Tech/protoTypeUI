@@ -1,22 +1,26 @@
+import { Fragment } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { Loader } from './components/Loader'
-import { AppContextProvider } from './context/AppContext'
 import { JobDetailPage, JobListings } from './pages/JobListings'
 import { LoginPage } from './pages/LoginPage'
 import { Search } from './pages/Search'
+import ProtectedRoutes from '@/routes/ProtectedRoutes'
 
 
 const App = () => {
   return (
-    <AppContextProvider>
+    <Fragment>
       <Loader />
       <Routes>
-        <Route element={<Search />} path="/home" />
         <Route element={<LoginPage />} path='/' />
-        <Route element={<JobListings />} path="/search" />
-        <Route element={<JobDetailPage />} path="/search/:id" />
+        <Route element={<ProtectedRoutes />}>
+          <Route element={<Search />} path="/home" />
+          <Route element={<JobListings />} path="/search" />
+          <Route element={<JobDetailPage />} path="/search/:id" />
+        </Route>
       </Routes>
-    </AppContextProvider>
+
+    </Fragment>
   )
 }
 

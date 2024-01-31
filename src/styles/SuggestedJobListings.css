@@ -1,0 +1,11 @@
+.suggestedJobLists {
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+.suggestedJobLists-mobile {
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* max-height: 68vh; */
+  max-height: 40vh;
+}

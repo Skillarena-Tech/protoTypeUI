@@ -13,7 +13,7 @@ export const JobDescriptionComponent = (props: any) => {
                 <div>
                     {jobDetail.qualification}
                 </div>
-            </div>jobDetail
+            </div>
         </div >
     )
 }

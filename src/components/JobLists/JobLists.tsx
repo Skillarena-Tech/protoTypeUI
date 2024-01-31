@@ -17,14 +17,14 @@ export const JobLists = (props: any) => {
 
         // }, 1500);
     };
-   
 
+    console.log(props.hasMore)
     return (
         <div className="w-100" >
             <InfiniteScroll
                 dataLength={data.length}
                 next={fetchMoreData}
-                hasMore={props.hasMore}
+                hasMore={!props.hasMore}
                 loader={<div className="d-flex justify-content-center align-items-center m-5"><CircularProgress /></div>}
                 scrollableTarget="jobList"
                 style={{

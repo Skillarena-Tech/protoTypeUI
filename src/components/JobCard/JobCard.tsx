@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAppContext } from '@/hooks/useAppContext'
 import "@/styles/JobCard.css"
 import { Avatar } from '@mui/material'
@@ -6,9 +7,11 @@ export const JobCard = (props: any) => {
     const { navigate } = useAppContext()
     return (
         <div className="card cardLayout cursor-pointer" onClick={() => {
-            navigate(`/search/${props.job.id}`, { state: {
-                job:props.job
-            } })
+            navigate(`/search/${props.job.id}`, {
+                state: {
+                    job: props.job
+                }
+            })
         }}>
             <div className="card-body">
                 <div className="d-flex flex-row gap-2 align-items-center" id="companyDescription">
@@ -22,8 +25,8 @@ export const JobCard = (props: any) => {
                 </div>
                 <div className="d-flex justify-content-between align-items-center mt-4">
                     <div className="d-flex flex-row gap-2 ">
-                        <div><span className="cardBadge">Full time</span></div>
-                        <div><span className="cardBadge">WFO</span></div>
+                        <div><span className="cardBadge fs-6">Full time</span></div>
+                        <div><span className="cardBadge fs-6">WFO</span></div>
 
                     </div>
                     <div className="me-2">{props.job.salary}</div>

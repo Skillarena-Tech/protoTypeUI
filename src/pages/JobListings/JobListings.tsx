@@ -1,29 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { JobLists } from "@/components/JobLists/JobLists";
+import { JobsNotFound } from "@/components/JobsNotFound";
 import Searchbar from "@/components/SearchBar/Searchbar";
 import { useAppContext } from "@/hooks/useAppContext";
 import { DesktopLayout as Layout } from "@/layout/DesktopLayout/DesktopLayout";
-import { getJobsLists } from "@/services/jobListingServices";
+
 import "@/styles/JobListings.css";
-import { useEffect, useState, Fragment } from "react";
+import { Fragment, useEffect } from "react";
 
 export const JobListings = () => {
-    const { isMobile, searchQuery, token } = useAppContext()
-    const [jobsItems, setJobItems] = useState<any[]>([])
-    const [totalJobCount, setTotalJobCount] = useState<number>(0)
-    const [hasMoreJobCount, setHasMoreJobCount] = useState<boolean>(false)
+    const { isMobile, jobData, searchQuery, navigate, totalJobCount, hasMoreJobData } = useAppContext()
     useEffect(() => {
-        const getJobList = async () => {
-            const res: any = await getJobsLists(searchQuery, token, 1, 6)
-            console.log(res)
-            setJobItems(res.data.data)
-            setTotalJobCount(res.data.total_records)
-            setHasMoreJobCount(!res.data.end_of_records)
+        if (!searchQuery) {
+            navigate("/home")
         }
-        getJobList()
     }, [])
 
-    
     return (
         <Layout showLogo={true} showSearchBar={true}>
             {isMobile && <div className="w-100">
@@ -33,14 +25,14 @@ export const JobListings = () => {
             </div>}
             {
                 totalJobCount > 0 ? <Fragment  >
-                    <div className="fs-5 fw-bold ps-4">{totalJobCount > 1 ? `${totalJobCount} jobs` : `${totalJobCount} Job`}   Found</div>
+                    <div className="fs-5 fw-bold pt-4 text-center">{totalJobCount > 1 ? `${totalJobCount} jobs` : `${totalJobCount} Job`}   Found</div>
                     <div className={`${isMobile ? "jobLists-mobile" : "jobLists"} mt-1`} id="jobList">
                         <div className="d-flex justify-content-center align-items-center p-3">
-                            <JobLists jobList={jobsItems} hasMore={hasMoreJobCount} />
+                            <JobLists jobList={jobData} hasMore={hasMoreJobData} />
                         </div>
                     </div>
                 </Fragment>
-                    : (<>not Found Message</>)
+                    : <JobsNotFound />
             }
         </Layout >
     )

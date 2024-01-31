@@ -1,10 +1,17 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { DesktopView, MobileView } from "../../components/Pages/LoginPage";
 import { useAppContext } from "@/hooks/useAppContext";
+import { token } from "@/services/tokenService";
 
 export const LoginPage = () => {
 
-    const { isMobile } = useAppContext()
+    const { isMobile, navigate, setIsLoggedIn } = useAppContext()
+    useEffect(() => {
+        if (token()) {
+            setIsLoggedIn(true)
+            navigate("/home")
+        }
+    }, [])
 
     return (
         <Fragment>

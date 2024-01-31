@@ -1,29 +1,34 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { getJobsListOnSearch } from "@/services/jobListingServices";
+import { getUserLocation } from "@/services/locationService";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { createContext, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
 type AppContextProps = {
     isMobile: boolean,
-    user: string,
-    setUser: (user: string) => void,
+    isLoggedIn: boolean,
+    setIsLoggedIn: (isLoggedIn: boolean) => void,
     searchQuery: string,
     setSearchQuery: (searchQuery: string) => void,
     openLoaderModal: boolean,
     setOpenLoaderModal: (openLoaderModal: boolean) => void,
     loaderType: string,
     setLoaderType: (loaderType: string) => void,
-    getUserLocation: () => void,
     navigate: NavigateFunction,
-    token: string,
-    setToken: (token: string) => void,
     locationAccess: boolean,
+    jobData: any,
+    setJobData: (jobData: any) => void,
+    searchJobs: (query: FormDataEntryValue) => Promise<void>,
+    totalJobCount: number,
+    hasMoreJobData: boolean
 }
 
 export const AppContext = createContext<AppContextProps>(null!)
 
 export const AppContextProvider = (props: React.PropsWithChildren) => {
 
-    const [user, setUser] = useState<string>('')
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [openLoaderModal, setOpenLoaderModal] = useState<boolean>(false)
     const [loaderType, setLoaderType] = useState<string>('');
@@ -31,39 +36,54 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
     const isMobileDevice = useMediaQuery(theme.breakpoints.down('md'))
     const isMobileWidth = useMediaQuery('(max-width:1100px)')
     const isMobile = isMobileDevice || isMobileWidth ? true : false
-    const [token, setToken] = useState<string>('')
     const [locationAccess, setLocationAccess] = useState<boolean>(false)
+    
+    const [jobData, setJobData] = useState<any[]>([])
+    const [totalJobCount, setTotalJobCount] = useState<number>(0)
+    const [hasMoreJobData, setHasMoreJobData] = useState<boolean>(false)
 
     const navigate = useNavigate()
 
-    const successCallback = (position: GeolocationPosition) => {
 
-        setLoaderType('')
-        setOpenLoaderModal(false)
-        navigate('/search')
-        console.log(position);
-    };
+    const userLocation = async () => {
+        navigator.permissions.query({ name: "geolocation" }).then((permission) => {
+            console.log(permission)
+            if (permission.state != "granted") {
+                 setLoaderType('location')
+            }
+        })
 
-    const errorCallback = (error: GeolocationPositionError) => {
-        console.log(error);
-    };
 
-    const getUserLocation = () => {
-        setLoaderType('location')
-        navigator.permissions
-            .query({ name: "geolocation" })
-            .then(function (result) {
-                navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-                setLocationAccess(true)
-                navigate('/search')
-                console.log(result);
-            }).catch(error => {
-                navigate('/search')
-                console.log(error)
-            })
+        try {
+            const cityName = await getUserLocation(setLocationAccess);
+            setLoaderType('')
+            return cityName
+        } catch (error: any) {
+            console.log("Error in AppContext", error.message)
+            setOpenLoaderModal(false)
+            return ""
+        }
     }
 
-    const value: AppContextProps = { isMobile, user, setUser, searchQuery, setSearchQuery, openLoaderModal, setOpenLoaderModal, loaderType, setLoaderType, getUserLocation, navigate, token, setToken, locationAccess }
+    const searchJobs = async (query: FormDataEntryValue) => {
+        setSearchQuery(query as string)
+        const location = await userLocation();
+        const res: any = await getJobsListOnSearch(query as string, location, 1, 6)
+        res.status == 200 && setOpenLoaderModal(false)
+        setJobData(res.data.data)
+        setTotalJobCount(res.data.total_records)
+        setHasMoreJobData(res.data.end_of_records)
+        // setOpenLoaderModal(false)
+        navigate("/search")
+    }
+
+    const value: AppContextProps = {
+        isMobile, isLoggedIn, setIsLoggedIn,
+        searchQuery, setSearchQuery, openLoaderModal,
+        setOpenLoaderModal, loaderType, setLoaderType,
+        navigate, locationAccess, jobData,
+        setJobData, searchJobs, totalJobCount, hasMoreJobData
+    }
     return (
         <AppContext.Provider value={value}>
             {props.children}

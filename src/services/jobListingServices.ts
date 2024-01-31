@@ -1,32 +1,41 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { apiConfig } from "@/api";
+import { token } from "./tokenService";
 
-const getJobsLists = async (
+const getJobsListOnSearch = async (
   query: string,
-  token: string,
+  location: string,
   page: number,
   limit: number
 ) => {
-  const res = await apiConfig.post(
+  const res: any = await apiConfig.post(
     "/job/search/",
-    { query, page, limit },
+    {
+      query,
+      location,
+      page,
+      limit,
+    },
     {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token()}`,
       },
     }
   );
-  console.log(res);
   return res;
 };
 
-const getJobById = async (id: string, token: string) => {
-  console.log(token);
-  const res = await apiConfig.get(`/job/${id}/`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    },
-  });
-  return res;
+const getJobList = async (limit: number, page: number) => {
+  const res: any = await apiConfig.post(
+    "/job/list",
+    { page, limit },
+    {
+      headers: {
+        Authorization: `Bearer ${token()}`,
+      },
+    }
+  );
+  return res.data;
 };
 
-export { getJobsLists, getJobById };
+export { getJobList, getJobsListOnSearch };

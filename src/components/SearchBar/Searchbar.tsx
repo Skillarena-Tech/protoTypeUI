@@ -5,19 +5,18 @@ import { IoSearchOutline } from "react-icons/io5";
 
 
 const Searchbar = () => {
-    const { searchQuery, setSearchQuery, setOpenLoaderModal, getUserLocation } = useAppContext()
+    const { searchQuery, searchJobs, setOpenLoaderModal } = useAppContext()
 
 
     const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
-        const data = new FormData(e.currentTarget)
         e.preventDefault()
-        if (data.get('searchString')) {
+        const data = new FormData(e.currentTarget)
+        const query = data.get('searchString')
+        if (query) {
             setOpenLoaderModal(true)
-            getUserLocation()
+            searchJobs(query)
         }
-        // navigate('/search')
     }
-
 
 
     return (
@@ -26,7 +25,15 @@ const Searchbar = () => {
                 <TextField
                     className='w-100'
                     placeholder="Dream Jobs Near Me ..."
+                    autoComplete='off'
+                    defaultValue={searchQuery}
                     sx={{
+                        backgroundColor: "#fff",
+                        '& MuiInputBase-input': {
+                            backgroundColor: "#fff",
+                            borderRadius: '22px',
+                            color: "#fff"
+                        },
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {
                                 borderColor: '#05e189',
@@ -41,11 +48,6 @@ const Searchbar = () => {
                                 borderColor: 'rgba(4, 186, 113, 1)',
                             },
                         },
-                    }}
-                    value={searchQuery}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        const { value } = e.target;
-                        setSearchQuery(value as string)
                     }}
                     autoFocus={true}
                     InputProps={{

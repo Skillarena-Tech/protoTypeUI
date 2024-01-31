@@ -1,8 +1,10 @@
+import mapLoader from "@/assets/gifs/mapLoader.gif"
+
 export const LocationPermissionLoader = () => {
     return (
-        <div className='d-flex flex-column'>
-            <img src="https://cdn.dribbble.com/users/261567/screenshots/1372220/map2.gif" alt="" />
-            Please allow  us to use your location for Hyperlocal
+        <div className='d-flex flex-column justify-content-center align-items-center'>
+            <img src={mapLoader} alt="" />
+            <div className="lead fw-bold">Please allow  us to use your location for Hyperlocal Job Search</div>
         </div>
     )
 }

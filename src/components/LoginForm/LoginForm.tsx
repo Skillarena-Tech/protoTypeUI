@@ -1,7 +1,7 @@
 import { loginUser } from "@/services/loginServices";
 import "@/styles/LoginForm.css";
 import { Alert, Avatar, CircularProgress, IconButton, InputAdornment, TextField, Tooltip } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 // import { useLocation } from "react-router-dom";
 
 import { useAppContext } from "@/hooks/useAppContext";
@@ -15,15 +15,7 @@ const LoginForm = () => {
     const [emptyFieldError, setEmptyFieldError] = useState<boolean>(false)
     const [loader, setLoader] = useState<boolean>(false)
     const [showPassword, setShowPassword] = useState<boolean>(false)
-    const { setUser, isMobile, navigate, setToken, setSearchQuery } = useAppContext()
-
-    useEffect(() => {
-        const token = localStorage.getItem('token')
-        if (token) {
-            setUser('authenticated')
-        }
-        setSearchQuery('')
-    }, [])
+    const { setIsLoggedIn, navigate } = useAppContext()
 
     const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -38,9 +30,10 @@ const LoginForm = () => {
         else {
             setLoader(true)
             const res = await loginUser(username, password);
+            console.log(res);
+
             if (res.status === 200) {
-                setUser('LoggedIn')
-                setToken(res.headers["authorization"].split(" ")[1])
+                setIsLoggedIn(true)
                 navigate("/home")
             }
             else {
@@ -65,8 +58,8 @@ const LoginForm = () => {
                 </div>
             </div>
             <div className="d-flex justify-content-center align-items-center">
-                {error && <Alert className={`${isMobile ? 'w-100' : 'w-75'} mt-3 d-flex align-items-center`} severity="error"><div className="">Invalid Username/Password</div></Alert>}
-                {emptyFieldError && <Alert className="w-75 mt-3 d-flex justify-content-center align-items-center" severity="error"><div className="">Empty fields are not allowed </div></Alert>}
+                {error && <Alert className={`w-100 mt-3 d-flex justify-content-center align-items-center`} severity="error"><div className="">Invalid Username/Password</div></Alert>}
+                {emptyFieldError && <Alert className={` w-100 mt-3 d-flex justify-content-center align-items-center`} severity="error"><div className="">Empty fields are not allowed </div></Alert>}
                 {/* {state?.redirected && <Alert className="w-75 mt-3 d-flex justify-content-center align-items-center" severity="info">Login to Continue</Alert>} */}
             </div>
             <div className="w-100">
@@ -74,11 +67,12 @@ const LoginForm = () => {
                     <form onSubmit={handleSubmit} className='d-flex flex-column w-100 align-items-center gap-3'>
                         <TextField size="medium" placeholder="Enter your email" InputProps={{
                             endAdornment: (
-                                <InputAdornment position='end' className="">
-                                    <CiMail size="25" />
+                                <InputAdornment position='end' className="pe-2">
+                                    <CiMail size="25" className="ms-2" />
                                 </InputAdornment>)
                         }} className="w-75"
                             name="username"
+                            autoComplete='username'
                         />
                         <TextField size="medium" placeholder="Password" InputProps={{
                             endAdornment: (
@@ -94,6 +88,7 @@ const LoginForm = () => {
                         }} className="w-75"
                             name="password"
                             type={showPassword ? 'text' : 'password'}
+                            autoComplete='current-password'
                         />
                         <button type="submit" color="success" className="w-75 btn button-color" disabled={loader}>
                             {loader ? (<CircularProgress />) :

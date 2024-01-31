@@ -1,28 +1,22 @@
-import { apiConfig } from "@/api";
-import { URI } from "@/api/config";
-import { AxiosResponse } from "axios";
+import { URI, backend } from "@/api/config";
+import axios, { AxiosResponse } from "axios";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const loginUser = async (username: any, password: any) => {
   try {
-    const res: AxiosResponse | any = await apiConfig.post(
-      URI.loginUser,
+    const res: AxiosResponse | any = await axios.post(
+      `${backend}${URI.loginUser}`,
       {
         username,
         password,
-      },
-      {}
+      }
     );
+    localStorage.setItem("token", res.headers["authorization"].split(" ")[1]);
     return res;
   } catch (error: any) {
     return error;
   }
 };
-const getUser = async () => {
-  const res: any = await apiConfig.get(URI.getUser, {});
-  console.log("Response", res);
-  console.log("Cookiee", res.headers["Authorization"]);
-  return res?.status;
-};
 
-export { loginUser, getUser };
+export { loginUser };
+

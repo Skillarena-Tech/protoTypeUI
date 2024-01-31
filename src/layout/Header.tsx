@@ -1,11 +1,10 @@
+import avatarLogo from '@/assets/images/avatar.png'
 import logo from "@/assets/images/dark-theme-logo.png"
 import Searchbar from '@/components/SearchBar/Searchbar'
 import { useAppContext } from '@/hooks/useAppContext'
 import { themeColor } from '@/utils/theme'
 import { Avatar, Button, IconButton, Menu, MenuItem, Tooltip } from '@mui/material'
-import React from "react"
-import { Fragment, useEffect } from 'react'
-import avatarLogo from '@/assets/images/avatar.png'
+import React, { Fragment } from "react"
 
 type HeaderProps = {
     showLogo: boolean,
@@ -13,12 +12,7 @@ type HeaderProps = {
 }
 
 const Header = ({ showLogo = false, showSearchBar = false }: HeaderProps) => {
-    const { user, isMobile, setUser, navigate, setSearchQuery, token, setToken } = useAppContext()
-    useEffect(() => {
-        if (token) {
-            setUser('authenticated')
-        }
-    }, [])
+    const { isLoggedIn, setIsLoggedIn, isMobile, navigate, setSearchQuery } = useAppContext()
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -30,18 +24,19 @@ const Header = ({ showLogo = false, showSearchBar = false }: HeaderProps) => {
     };
 
     const handleLogout = () => {
-        setUser('')
-        setToken('')
+        setIsLoggedIn(false)
+        localStorage.removeItem("token")
+        setSearchQuery('')
         navigate("/")
     }
     return (
         <Fragment>
-            <div className="d-flex justify-content-between  align-items-center ">
+            <div className="d-flex justify-content-between  align-items-center mt-1">
                 {showLogo && (<div className={`${(!showSearchBar || isMobile) ? 'h-50 w-50' : 'h-25 w-25'}`} style={{ cursor: 'pointer' }} onClick={() => {
-                    navigate(token ? '/home' : '/')
+                    navigate(isLoggedIn ? '/home' : '/')
                     setSearchQuery('')
                 }}>
-                    <img src={logo} alt="" className='h-100 w-100' />
+                    <img src={logo} alt="" className='h-50 w-50 p-3' />
                 </div>)}
                 {(!isMobile && showSearchBar) && (
                     <div className='w-50 me-5'>
@@ -49,7 +44,7 @@ const Header = ({ showLogo = false, showSearchBar = false }: HeaderProps) => {
                     </div>
                 )}
                 <div className={` me-4 ${!(showLogo) && 'mt-4 ms-auto'}`}>
-                    {user ?
+                    {isLoggedIn ?
                         <Fragment>
 
                             <Tooltip title="Profile">

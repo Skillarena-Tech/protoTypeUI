@@ -18,8 +18,8 @@ export const DesktopView = () => {
           </div>
         </div>
 
-        <div className="col-7 mt-5">
-          <div className="mt-5">
+        <div className="col-7 h-100">
+          <div className="d-flex justify-content-center align-items-center flex-column h-100 pb-5">
             <LoginForm />
           </div>
         </div>

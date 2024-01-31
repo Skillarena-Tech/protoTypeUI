@@ -1,28 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from 'react'
+import { useAppContext } from '@/hooks/useAppContext'
+import { token } from '@/services/tokenService'
+import { useEffect } from 'react'
+
 import { Navigate, Outlet } from 'react-router-dom'
 
 const ProtectedRoutes = () => {
-    const [authToken, setAuthToken] = useState<boolean>(false)
-
-    // useEffect(() => {
-    //     const getUserFromApi = async () => {
-    //         console.log(await getUser())
-    //     }
-    //     getUserFromApi();
-    // }, [])
+    const auth = { token: token() }
+    const { setIsLoggedIn } = useAppContext()
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
-
-        if (token) {
-            console.log(token);
-            setAuthToken(true)
+        if (token()) {
+            setIsLoggedIn(true)
         }
-    }, [])
+    }, [setIsLoggedIn])
 
     return (
-        authToken ? <Outlet /> : <Navigate to="/" />
+        auth.token ? <Outlet /> : <Navigate to="/" />
     )
 }
 

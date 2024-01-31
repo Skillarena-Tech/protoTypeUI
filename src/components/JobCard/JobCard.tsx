@@ -13,6 +13,7 @@ export const JobCard = (props: any) => {
                 }
             })
         }}>
+
             <div className="card-body">
                 <div className="d-flex flex-row gap-2 align-items-center" id="companyDescription">
 

@@ -21,7 +21,8 @@ type AppContextProps = {
     setJobData: (jobData: any) => void,
     searchJobs: (query: FormDataEntryValue) => Promise<void>,
     totalJobCount: number,
-    hasMoreJobData: boolean
+    hasMoreJobData: boolean,
+    getMoreJobs: (page: number, setPage: React.Dispatch<React.SetStateAction<number>>) => Promise<void>
 }
 
 export const AppContext = createContext<AppContextProps>(null!)
@@ -37,7 +38,7 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
     const isMobileWidth = useMediaQuery('(max-width:1100px)')
     const isMobile = isMobileDevice || isMobileWidth ? true : false
     const [locationAccess, setLocationAccess] = useState<boolean>(false)
-    
+
     const [jobData, setJobData] = useState<any[]>([])
     const [totalJobCount, setTotalJobCount] = useState<number>(0)
     const [hasMoreJobData, setHasMoreJobData] = useState<boolean>(false)
@@ -49,7 +50,7 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
         navigator.permissions.query({ name: "geolocation" }).then((permission) => {
             console.log(permission)
             if (permission.state != "granted") {
-                 setLoaderType('location')
+                setLoaderType('location')
             }
         })
 
@@ -68,7 +69,7 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
     const searchJobs = async (query: FormDataEntryValue) => {
         setSearchQuery(query as string)
         const location = await userLocation();
-        const res: any = await getJobsListOnSearch(query as string, location, 1, 6)
+        const res: any = await getJobsListOnSearch(query as string, location, 1, 9)
         res.status == 200 && setOpenLoaderModal(false)
         setJobData(res.data.data)
         setTotalJobCount(res.data.total_records)
@@ -77,12 +78,25 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
         navigate("/search")
     }
 
+    const getMoreJobs = async (page: number, setPage: React.Dispatch<React.SetStateAction<number>>
+    ) => {
+        const location = await userLocation()
+        const jobsList = await getJobsListOnSearch(searchQuery, location, page, 9)
+        if (!jobsList.data.end_of_records)
+            setPage(page + 1)
+        else
+            setTotalJobCount(jobData.length)
+
+        setJobData(jobData => [...jobData, ...jobsList.data.data])
+        setHasMoreJobData(jobsList.data.end_of_records)
+    }
+
     const value: AppContextProps = {
         isMobile, isLoggedIn, setIsLoggedIn,
         searchQuery, setSearchQuery, openLoaderModal,
         setOpenLoaderModal, loaderType, setLoaderType,
         navigate, locationAccess, jobData,
-        setJobData, searchJobs, totalJobCount, hasMoreJobData
+        setJobData, searchJobs, totalJobCount, hasMoreJobData, getMoreJobs
     }
     return (
         <AppContext.Provider value={value}>

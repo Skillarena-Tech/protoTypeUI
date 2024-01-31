@@ -1,24 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { JobCard } from '@/components/JobCard';
+import { useAppContext } from '@/hooks/useAppContext';
 import { CircularProgress } from '@mui/material';
+import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 
 export const JobLists = (props: any) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data = props.jobList
+    const [page, setPage] = useState<number>(1);
+    const { getMoreJobs } = useAppContext();
 
     const fetchMoreData = () => {
-        // // a fake async api call like which sends
-        // // 20 more records in 1.5 secs
-        // setTimeout(() => {
-        //     setData(data.concat(Array.from({ length: 20 })))
-
-        // }, 1500);
+        getMoreJobs(page, setPage)
     };
 
-    console.log(props.hasMore)
     return (
         <div className="w-100" >
             <InfiniteScroll

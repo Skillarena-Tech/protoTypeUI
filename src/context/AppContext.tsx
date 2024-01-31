@@ -79,14 +79,13 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
     }
 
     const getMoreJobs = async (page: number, setPage: React.Dispatch<React.SetStateAction<number>>
-    ) => {
+        ) => {
         const location = await userLocation()
         const jobsList = await getJobsListOnSearch(searchQuery, location, page, 9)
         if (!jobsList.data.end_of_records)
             setPage(page + 1)
-        else
-            setTotalJobCount(jobData.length)
 
+        setTotalJobCount(jobsList.data.total_records)
         setJobData(jobData => [...jobData, ...jobsList.data.data])
         setHasMoreJobData(jobsList.data.end_of_records)
     }

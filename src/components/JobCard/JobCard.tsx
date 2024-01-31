@@ -16,12 +16,12 @@ export const JobCard = (props: any) => {
 
             <div className="card-body">
                 <div className="d-flex flex-row gap-2 align-items-center" id="companyDescription">
-
-                    <div><Avatar src={"https://source.unsplash.com/random?wallpapers"} ></Avatar></div>
+                    {/* {console.log(props.job?.logo.split('?')[0])} */}
+                    <div><Avatar src={props.job.logo!=null ? props.job.logo : "https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png"} ></Avatar></div>
                     <div>
-                        <h5 className="card-title fw-bold">{props.job.title}</h5>
-                        <div className="card-text " style={{ fontSize: "0.9em" }}>{props.job.name}</div>
-                        <div className="card-text " style={{ fontSize: "0.7em" }}>{props.job.city}, {props.job.state}</div>
+                        <h5 className="card-title fw-bold" >{props.job.title}</h5>
+                        <div className="card-text " style={{ fontSize: "0.9em", textOverflow: "ellipse" }}>{props.job.name}</div>
+                        <div className="card-text " style={{ fontSize: "0.7em", textOverflow: "ellipse" }}>{props.job.city}, {props.job.state}</div>
                     </div>
                 </div>
                 <div className="d-flex justify-content-between align-items-center mt-4">

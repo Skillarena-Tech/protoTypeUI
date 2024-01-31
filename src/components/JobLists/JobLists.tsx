@@ -10,7 +10,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 export const JobLists = (props: any) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data = props.jobList
-    const [page, setPage] = useState<number>(1);
+    const [page, setPage] = useState<number>(2);
     const { getMoreJobs } = useAppContext();
 
     const fetchMoreData = () => {

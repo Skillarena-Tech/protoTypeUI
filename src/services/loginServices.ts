@@ -11,7 +11,7 @@ const loginUser = async (username: any, password: any) => {
         password,
       }
     );
-    localStorage.setItem("token", res.headers["authorization"].split(" ")[1]);
+    localStorage.setItem("skillarena_token", res.headers["authorization"].split(" ")[1]);
     return res;
   } catch (error: any) {
     return error;

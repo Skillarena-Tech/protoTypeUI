@@ -3,4 +3,8 @@ const token = () => {
   return getToken;
 };
 
-export { token };
+const removeToken = () => {
+  localStorage.removeItem("skillarena_token");
+};
+
+export { token, removeToken };

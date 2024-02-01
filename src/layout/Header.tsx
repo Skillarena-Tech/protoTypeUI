@@ -25,7 +25,7 @@ const Header = ({ showLogo = false, showSearchBar = false }: HeaderProps) => {
 
     const handleLogout = () => {
         setIsLoggedIn(false)
-        localStorage.removeItem("token")
+        localStorage.removeItem("skillarena_token")
         setSearchQuery('')
         navigate("/")
     }

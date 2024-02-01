@@ -19,10 +19,14 @@ type AppContextProps = {
     locationAccess: boolean,
     jobData: any,
     setJobData: (jobData: any) => void,
-    searchJobs: (query: FormDataEntryValue) => Promise<void>,
+    searchJobs: (query: FormDataEntryValue,filter:boolean) => Promise<void>,
     totalJobCount: number,
     hasMoreJobData: boolean,
-    getMoreJobs: (page: number, setPage: React.Dispatch<React.SetStateAction<number>>) => Promise<void>
+    getMoreJobs: (query: string, page: number, setPage: React.Dispatch<React.SetStateAction<number>>) => Promise<void>,
+    openFilterDrawer: boolean,
+    setOpenFilterDrawer: (openFilterDrawer: boolean) => void,
+    filterQuery: string,
+    setFilterQuery: (filterQuery: string) => void
 }
 
 export const AppContext = createContext<AppContextProps>(null!)
@@ -31,6 +35,7 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
 
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
     const [searchQuery, setSearchQuery] = useState<string>('')
+    const [filterQuery, setFilterQuery] = useState<string>('')
     const [openLoaderModal, setOpenLoaderModal] = useState<boolean>(false)
     const [loaderType, setLoaderType] = useState<string>('');
     const theme = useTheme()
@@ -38,10 +43,10 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
     const isMobileWidth = useMediaQuery('(max-width:1100px)')
     const isMobile = isMobileDevice || isMobileWidth ? true : false
     const [locationAccess, setLocationAccess] = useState<boolean>(false)
-
     const [jobData, setJobData] = useState<any[]>([])
     const [totalJobCount, setTotalJobCount] = useState<number>(0)
     const [hasMoreJobData, setHasMoreJobData] = useState<boolean>(false)
+    const [openFilterDrawer, setOpenFilterDrawer] = useState<boolean>(false)
 
     const navigate = useNavigate()
 
@@ -53,8 +58,6 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
                 setLoaderType('location')
             }
         })
-
-
         try {
             const cityName = await getUserLocation(setLocationAccess);
             setLoaderType('')
@@ -66,10 +69,10 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
         }
     }
 
-    const searchJobs = async (query: FormDataEntryValue) => {
-        setSearchQuery(query as string)
+    const searchJobs = async (query: FormDataEntryValue, filter: boolean) => {
+        !filter && setSearchQuery(query as string)
         const location = await userLocation();
-        const res: any = await getJobsListOnSearch(query as string, location, 1, 9)
+        const res: any = await getJobsListOnSearch(query as string, location, 1, 15)
         res.status == 200 && setOpenLoaderModal(false)
         setJobData(res.data.data)
         setTotalJobCount(res.data.total_records)
@@ -78,10 +81,10 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
         navigate("/search")
     }
 
-    const getMoreJobs = async (page: number, setPage: React.Dispatch<React.SetStateAction<number>>
-        ) => {
+    const getMoreJobs = async (query: string, page: number, setPage: React.Dispatch<React.SetStateAction<number>>
+    ) => {
         const location = await userLocation()
-        const jobsList = await getJobsListOnSearch(searchQuery, location, page, 9)
+        const jobsList = await getJobsListOnSearch(query, location, page, 9)
         if (!jobsList.data.end_of_records)
             setPage(page + 1)
 
@@ -95,7 +98,10 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
         searchQuery, setSearchQuery, openLoaderModal,
         setOpenLoaderModal, loaderType, setLoaderType,
         navigate, locationAccess, jobData,
-        setJobData, searchJobs, totalJobCount, hasMoreJobData, getMoreJobs
+        setJobData, searchJobs, totalJobCount,
+        hasMoreJobData, getMoreJobs,
+        openFilterDrawer, setOpenFilterDrawer,
+        filterQuery, setFilterQuery
     }
     return (
         <AppContext.Provider value={value}>

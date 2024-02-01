@@ -12,8 +12,9 @@ export const Search = () => {
 
     const handleClick = (query: string) => {
         setOpenLoaderModal(true)
-        searchJobs(query)
+        searchJobs(query,false)
     }
+
 
     return (
         <Fragment>

@@ -14,7 +14,7 @@ const Searchbar = () => {
         const query = data.get('searchString')
         if (query) {
             setOpenLoaderModal(true)
-            searchJobs(query)
+            searchJobs(query,false)
         }
     }
 

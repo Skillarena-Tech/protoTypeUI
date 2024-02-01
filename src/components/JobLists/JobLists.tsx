@@ -11,10 +11,10 @@ export const JobLists = (props: any) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data = props.jobList
     const [page, setPage] = useState<number>(2);
-    const { getMoreJobs } = useAppContext();
+    const { getMoreJobs, searchQuery } = useAppContext();
 
     const fetchMoreData = () => {
-        getMoreJobs(page, setPage)
+        getMoreJobs(searchQuery,page, setPage)
     };
 
     return (

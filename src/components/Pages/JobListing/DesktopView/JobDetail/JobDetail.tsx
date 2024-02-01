@@ -1,15 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { themeColor } from '@/utils/theme'
-import { Avatar, Button } from '@mui/material'
+import { Avatar, Button, IconButton, Tooltip } from '@mui/material'
 import "@/styles/Desktop/JobDetail.css"
 import { JobDescriptionComponent } from '../JobDescriptionComponent'
 import { useAppContext } from '@/hooks/useAppContext'
+import { IoArrowBack } from 'react-icons/io5'
 
 export const JobDetail = (props: any) => {
     const { jobDetail } = props
-    const { setOpenLoaderModal, setLoaderType } = useAppContext()
+    const { setOpenLoaderModal, setLoaderType, navigate } = useAppContext()
     return (
         <div className='card mx-5  p-4 px-5' style={{ border: `1px solid ${themeColor}` }}>
+            <div className=''><Tooltip title='Go Back'>
+                <IconButton onClick={() => { navigate('/search') }}>
+                    <IoArrowBack />
+                </IconButton>
+            </Tooltip></div>
             <div id="companyDetailsWithApply" className='d-flex justify-content-between align-items-center'>
                 <div>
                     <div className="d-flex flex-row gap-4 align-items-center" id="companyDescription">

@@ -8,7 +8,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 export const JobDetailPage = () => {
-    const { isMobile } = useAppContext();
+    const { isMobile, navigate } = useAppContext();
     const { state } = useLocation();
     const [jobDetail, setJobDetail] = useState<any[]>([]);
     // useEffect(() => {
@@ -26,6 +26,12 @@ export const JobDetailPage = () => {
         if (state) {
             setJobDetail(state.job)
         }
+        else {
+            navigate("/home")
+        }
+        return (() => {
+            window.history.replaceState({}, document.title)
+        })
     }, [])
     return (
         <Fragment>

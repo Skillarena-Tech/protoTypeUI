@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAppContext } from '@/hooks/useAppContext'
 import "@/styles/JobCard.css"
+import { themeColor } from '@/utils/theme'
 import { Avatar } from '@mui/material'
 
 export const JobCard = (props: any) => {
@@ -25,7 +26,7 @@ export const JobCard = (props: any) => {
                     </div>
                 </div>
                 <div className="d-flex align-items-center mt-4">
-                    <div className="fw-bold fs-5 text-success">Salary: </div>
+                    <div className="fw-bold fs-5 " style={{ color: themeColor }}>Salary: </div>
                     <div className="mx-2 fs-5 ">{props.job.salary}</div>
                 </div>
             </div>

@@ -4,6 +4,7 @@ import { Fragment, useState } from 'react'
 import { MdOutlineExpandMore } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import { useAppContext } from '@/hooks/useAppContext';
+import { themeColor } from '@/utils/theme';
 
 export const FilterDrawer = () => {
     const [jobTitle, setJobTitle] = useState('')
@@ -43,7 +44,7 @@ export const FilterDrawer = () => {
                                 <IoMdClose />
                             </IconButton>
                         </Tooltip></div>
-                        <div className="text-success"><Button color="success" onClick={clearFilters}>Clear Filter</Button>
+                        <div className="text-success"><Button color="success" onClick={clearFilters} >Clear Filter</Button>
                         </div>
                     </div>
                     <List>
@@ -82,7 +83,7 @@ export const FilterDrawer = () => {
                     </List>
                     <div className=" w-100 mt-3">
                         <div className="text-center">
-                            <Button color="success" variant="contained" onClick={handleApply}>Apply Filters</Button>
+                            <Button color="success" variant="contained" onClick={handleApply} sx={{ backgroundColor: themeColor }}>Apply Filters</Button>
                         </div>
                     </div>
                 </Box>

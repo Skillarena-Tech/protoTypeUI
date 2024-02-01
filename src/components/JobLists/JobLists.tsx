@@ -14,7 +14,7 @@ export const JobLists = (props: any) => {
     const { getMoreJobs, searchQuery } = useAppContext();
 
     const fetchMoreData = () => {
-        getMoreJobs(searchQuery,page, setPage)
+        setTimeout(() => { getMoreJobs(searchQuery, page, setPage) }, 2000)
     };
 
     return (

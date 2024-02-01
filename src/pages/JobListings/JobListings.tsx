@@ -10,6 +10,7 @@ import { CiFilter } from "react-icons/ci";
 import "@/styles/JobListings.css";
 import { Button, IconButton, Tooltip } from "@mui/material";
 import { Fragment, useEffect } from "react";
+import { themeColor } from "@/utils/theme";
 
 export const JobListings = () => {
     const { isMobile, jobData, searchQuery, navigate, totalJobCount, hasMoreJobData, setOpenFilterDrawer } = useAppContext()
@@ -43,7 +44,7 @@ export const JobListings = () => {
                                     </IconButton>
                                 </Tooltip>
                             ) :
-                                <Button variant="contained" color="success" onClick={handleFilter}>Filter</Button>
+                                <Button variant="contained" color="success" onClick={handleFilter} sx={{ backgroundColor: themeColor }}>Filter</Button>
                             }
                         </div>
                     </div>

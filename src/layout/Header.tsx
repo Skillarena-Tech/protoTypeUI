@@ -36,7 +36,7 @@ const Header = ({ showLogo = false, showSearchBar = false }: HeaderProps) => {
                     navigate(isLoggedIn ? '/home' : '/')
                     setSearchQuery('')
                 }}>
-                    <img src={logo} alt="" className='h-50 w-50 p-3' />
+                    <img src={logo} alt="" className={`${isMobile ? 'h-75 w-75' : "h-50 w-50"} p-3`} />
                 </div>)}
                 {(!isMobile && showSearchBar) && (
                     <div className='w-50 me-5'>

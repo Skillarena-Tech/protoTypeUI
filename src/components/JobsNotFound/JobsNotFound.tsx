@@ -3,6 +3,7 @@ import { Fragment } from 'react'
 import { SuggestedJobs } from '../Pages/Search'
 import { useAppContext } from "@/hooks/useAppContext"
 import { Button } from "@mui/material"
+import { themeColor } from "@/utils/theme"
 
 export const JobsNotFound = () => {
     const { isMobile, setOpenFilterDrawer } = useAppContext()
@@ -10,7 +11,7 @@ export const JobsNotFound = () => {
         <Fragment>
             <div className='d-flex justify-content-between align-items-center  mt-5 mb-2 px-5'>
                 <div className='fw-bold fs-2 '>No Jobs Found</div>
-                <Button variant="contained" color="success" onClick={() => { setOpenFilterDrawer(true) }}>Filter</Button>
+                <Button variant="contained" color="success" onClick={() => { setOpenFilterDrawer(true) }} sx={{ backgroundColor: themeColor }}>Filter</Button>
             </div>
             {
                 isMobile ? <Fragment>

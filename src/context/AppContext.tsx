@@ -19,7 +19,7 @@ type AppContextProps = {
     locationAccess: boolean,
     jobData: any,
     setJobData: (jobData: any) => void,
-    searchJobs: (query: FormDataEntryValue,filter:boolean) => Promise<void>,
+    searchJobs: (query: FormDataEntryValue, filter: boolean) => Promise<void>,
     totalJobCount: number,
     hasMoreJobData: boolean,
     getMoreJobs: (query: string, page: number, setPage: React.Dispatch<React.SetStateAction<number>>) => Promise<void>,
@@ -53,14 +53,15 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
 
     const userLocation = async () => {
         navigator.permissions.query({ name: "geolocation" }).then((permission) => {
-            console.log(permission)
             if (permission.state != "granted") {
                 setLoaderType('location')
             }
         })
         try {
             const cityName = await getUserLocation(setLocationAccess);
-            setLoaderType('')
+            setTimeout(() => {
+                setLoaderType('')
+            }, 2000)
             return cityName
         } catch (error: any) {
             console.log("Error in AppContext", error.message)
@@ -73,7 +74,7 @@ export const AppContextProvider = (props: React.PropsWithChildren) => {
         !filter && setSearchQuery(query as string)
         const location = await userLocation();
         const res: any = await getJobsListOnSearch(query as string, location, 1, 15)
-        res.status == 200 && setOpenLoaderModal(false)
+        res.status == 200 && setTimeout(() => { setOpenLoaderModal(false) }, 1000)
         setJobData(res.data.data)
         setTotalJobCount(res.data.total_records)
         setHasMoreJobData(res.data.end_of_records)

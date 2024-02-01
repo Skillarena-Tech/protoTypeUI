@@ -21,7 +21,7 @@ export const JobDetailMobile = (props: any) => {
                 <div id="companyDetailsWithApply" className='d-flex justify-content-between align-items-center'>
                     <div>
                         <div className="d-flex flex-row gap-4 align-items-center" id="companyDescription">
-                            <div><Avatar src="https://source.unsplash.com/random?wallpapers" ></Avatar></div>
+                            <div><Avatar src={jobDetail.logo ? jobDetail.logo : "https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png"} ></Avatar></div>
                             <div>
                                 <h5 className="card-title fw-bold">{jobDetail.title}</h5>
                                 <div className="card-text " style={{ fontSize: "0.9em" }}>{jobDetail.name}</div>

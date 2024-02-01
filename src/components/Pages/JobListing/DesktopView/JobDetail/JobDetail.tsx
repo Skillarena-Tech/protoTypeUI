@@ -35,9 +35,9 @@ export const JobDetail = (props: any) => {
                     <div>{jobDetail.registered_year}</div>
                 </div>
                 <div className="d-flex flex-column">
-                    <div className='text-success text-uppercase fw-bold fs-6'>Job Location</div>
-                    <div>Remote</div>
-                </div>
+                        <div className='text-success text-uppercase fw-bold fs-6'>Employee Count</div>
+                        <div className="text-center">{jobDetail.employee_count ? jobDetail.employee_count : "-"}</div>
+                    </div>
                 <div className="d-flex flex-column">
                     <div className='text-success text-uppercase fw-bold fs-6'>Salary Range </div>
                     <div>{jobDetail.salary}</div>
